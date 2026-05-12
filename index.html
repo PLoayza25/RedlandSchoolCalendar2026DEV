@@ -728,7 +728,7 @@ let activeType = new Set(['activity','test','salida','cross','feriado','sports']
 
 function loadEvents() {
   setSyncStatus('loading', 'Loading events...');
-  const url = 'https://raw.githubusercontent.com/PLoayza25/RedlandSchoolCalendarDEV/main/events.json?t=' + Date.now();
+  const url = 'https://raw.githubusercontent.com/PLoayza25/RedlandSchoolCalendar2026DEV/main/events.json?t=' + Date.now();
   fetch(url)
     .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
     .then(data => {
