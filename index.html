@@ -978,7 +978,7 @@ function confirmDelete(id) {
     setSyncStatus('loading','Deleting...');
     if (SCRIPT_URL==='PASTE_YOUR_WEB_APP_URL_HERE') { deleteEventLocal(id); showToast('Deleted.'); setSyncStatus('ok','Local mode'); return; }
     apiCall({action:'deleteEvent', id:id})
-      .then(d=>{ if(d.ok){ deleteEventLocal(id); showToast('Event deleted.'); setSyncStatus('ok','Synced'); apiCall({action:'publishNow'}).catch(()=>{}); } else showToast('Error: '+d.error); })
+      .then(d=>{ if(d.ok){ deleteEventLocal(id); showToast('Event deleted.'); setSyncStatus('ok','Synced'); } else showToast('Error: '+d.error); })
       .catch(()=>showToast('Connection error — event not deleted.'));
   };
 }
@@ -1247,7 +1247,7 @@ function openEditModal(id) {
       .then(d=>{
         if(d.ok){
           events=events.map(e=>e.id===id?updated:e); render(); showToast('Event updated.'); setSyncStatus('ok','Synced '+new Date().toLocaleTimeString());
-          apiCall({action:'publishNow'}).catch(()=>{});
+         
         } else showToast('Error saving: '+d.error);
       }).catch(()=>showToast('Connection error — changes not saved.'));
   };
@@ -1396,7 +1396,7 @@ function openModal() {
     }
     apiCall({action:'addEvents',events:newEvents})
       .then(d=>{
-        if(d.ok){ events=[...events,...newEvents]; if(viewMode==='month') cur=new Date(newEvents[0].date.slice(0,7)+'-01'); render(); showToast('Event saved.'); setSyncStatus('ok','Synced '+new Date().toLocaleTimeString()); apiCall({action:'publishNow'}).catch(()=>{}); }
+        if(d.ok){ events=[...events,...newEvents]; if(viewMode==='month') cur=new Date(newEvents[0].date.slice(0,7)+'-01'); render(); showToast('Event saved.'); setSyncStatus('ok','Synced '+new Date().toLocaleTimeString()); }
         else showToast('Error saving: '+d.error);
       })
       .catch(()=>showToast('Connection error — event not saved.'));
