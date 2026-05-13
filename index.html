@@ -822,10 +822,10 @@ function classesLabel(e) {
   if (!e.classes||e.classes.length===0) return '';
   const sk = evSectionKey(e);
   if (sk==='Cross') return '';
-  if (sk==='MiddleSenior') return 'Middle+Senior';
+  if (sk==='MiddleSenior') return 'Mid&Sr';
   if (isWholeSection(e)) {
     const secs = new Set(e.classes.map(classSection));
-    if (secs.has('Middle')&&secs.has('Senior')) return 'Middle+Senior';
+    if (secs.has('Middle')&&secs.has('Senior')) return 'Mid&Sr';
     if (secs.size===1) return [...secs][0];
   }
   if (e.classes.length<=3) return e.classes.join(', ');
