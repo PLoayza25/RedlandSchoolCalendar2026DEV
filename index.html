@@ -1029,13 +1029,11 @@ function renderMonth() {
   let cells=[];
   for(let i=firstDay-1;i>=0;i--) cells.push({d:prevDim-i,mo:m-1,other:true});
   for(let i=1;i<=dim;i++) cells.push({d:i,mo:m,other:false});
-  // Remove Sundays from cells
+  // Remove Sundays from all cells
   cells = cells.filter(c=>new Date(y,c.mo,c.d).getDay()!==0);
-  // Pad to multiple of 6 using next-month days
+  // Pad to next multiple of 6 (complete last row)
   let nextDay = 1;
   while(cells.length%6!==0) cells.push({d:nextDay++,mo:m+1,other:true});
-  // Limit to max 5 rows (30 cells)
-  cells = cells.slice(0, 30);
   cells.forEach(c=>{
     const dt=fmt(new Date(y,c.mo,c.d));
     const isT=dt===fmt(TODAY);
