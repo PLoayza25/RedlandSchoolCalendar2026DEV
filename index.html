@@ -820,6 +820,14 @@ function evSectionKey(e) {
 
 function classesLabel(e) {
   if (!e.classes||e.classes.length===0) return '';
+  const sk = evSectionKey(e);
+  if (sk==='Cross') return '';
+  if (sk==='MiddleSenior') return 'Middle+Senior';
+  if (isWholeSection(e)) {
+    const secs = new Set(e.classes.map(classSection));
+    if (secs.has('Middle')&&secs.has('Senior')) return 'Middle+Senior';
+    if (secs.size===1) return [...secs][0];
+  }
   if (e.classes.length<=3) return e.classes.join(', ');
   return e.classes.slice(0,2).join(', ')+' +'+(e.classes.length-2);
 }
@@ -1008,7 +1016,7 @@ function showDeleteRangeModal(id, groupId, title, rangeStart, rangeEnd) {
 function renderMonth() {
   const y=cur.getFullYear(), m=cur.getMonth();
   document.getElementById('mlabel').textContent = MONTHS[m]+' '+y;
-  const firstDay=(new Date(y,m,1).getDay()+6)%7;
+  const firstDay=(new Date(y,m,1).getDay()+6)%7; // Mon=0...Sat=5
   const dim=new Date(y,m+1,0).getDate();
   const prevDim=new Date(y,m,0).getDate();
   if (events.length===0) {
@@ -1022,6 +1030,7 @@ function renderMonth() {
   for(let i=firstDay-1;i>=0;i--) cells.push({d:prevDim-i,mo:m-1,other:true});
   for(let i=1;i<=dim;i++) cells.push({d:i,mo:m,other:false});
   while(cells.length%6!==0) cells.push({d:cells.length-dim-firstDay+1,mo:m+1,other:true});
+  // Remove any cells that fall on Sunday (getDay()===0)
   cells = cells.filter(c=>new Date(y,c.mo,c.d).getDay()!==0);
   while(cells.length%6!==0) cells.push({d:cells[cells.length-1].d+1,mo:m+1,other:true});
   cells.forEach(c=>{
